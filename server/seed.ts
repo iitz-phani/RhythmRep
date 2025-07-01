@@ -79,49 +79,101 @@ export async function seedData() {
   const insertedExercises = await db.insert(schema.exercises).values(exercises).returning();
 
   // Seed workout plans
-  const pushPullPlan = await db.insert(schema.workoutPlans).values({
-    name: "Push-Pull Split",
-    splitType: "Push-Pull",
-    difficulty: "Intermediate",
-    goal: "Build",
-    equipmentRequired: "Full Gym",
-    scheduleJson: JSON.stringify([
-      { day: "Monday", type: "Push", exercises: ["Chest", "Shoulders", "Triceps"] },
-      { day: "Tuesday", type: "Pull", exercises: ["Back", "Biceps"] },
-      { day: "Wednesday", type: "Rest" },
-      { day: "Thursday", type: "Push", exercises: ["Chest", "Shoulders", "Triceps"] },
-      { day: "Friday", type: "Pull", exercises: ["Back", "Biceps"] },
-      { day: "Saturday", type: "Legs", exercises: ["Legs"] },
-      { day: "Sunday", type: "Rest" },
-    ]),
-  }).returning();
+  const workoutPlans = await db.insert(schema.workoutPlans).values([
+    {
+      name: "Push-Pull Split",
+      splitType: "Push-Pull",
+      difficulty: "Intermediate",
+      goal: "Build",
+      equipmentRequired: "Full Gym",
+      scheduleJson: JSON.stringify([
+        { day: "Monday", type: "Push", exercises: ["Chest", "Shoulders", "Triceps"] },
+        { day: "Tuesday", type: "Pull", exercises: ["Back", "Biceps"] },
+        { day: "Wednesday", type: "Rest" },
+        { day: "Thursday", type: "Push", exercises: ["Chest", "Shoulders", "Triceps"] },
+        { day: "Friday", type: "Pull", exercises: ["Back", "Biceps"] },
+        { day: "Saturday", type: "Legs", exercises: ["Legs"] },
+        { day: "Sunday", type: "Rest" },
+      ]),
+    },
+    {
+      name: "Full Body Beginner",
+      splitType: "Full Body",
+      difficulty: "Beginner",
+      goal: "Build",
+      equipmentRequired: "Minimal",
+      scheduleJson: JSON.stringify([
+        { day: "Monday", type: "Full Body", exercises: ["Chest", "Back", "Legs"] },
+        { day: "Tuesday", type: "Rest" },
+        { day: "Wednesday", type: "Full Body", exercises: ["Shoulders", "Arms", "Core"] },
+        { day: "Thursday", type: "Rest" },
+        { day: "Friday", type: "Full Body", exercises: ["Chest", "Back", "Legs"] },
+        { day: "Saturday", type: "Rest" },
+        { day: "Sunday", type: "Rest" },
+      ]),
+    },
+    {
+      name: "HIIT Cardio Blast",
+      splitType: "Cardio",
+      difficulty: "Advanced",
+      goal: "Cut",
+      equipmentRequired: "Minimal",
+      scheduleJson: JSON.stringify([
+        { day: "Monday", type: "HIIT", exercises: ["Cardio", "Core"] },
+        { day: "Tuesday", type: "HIIT", exercises: ["Cardio", "Core"] },
+        { day: "Wednesday", type: "Rest" },
+        { day: "Thursday", type: "HIIT", exercises: ["Cardio", "Core"] },
+        { day: "Friday", type: "HIIT", exercises: ["Cardio", "Core"] },
+        { day: "Saturday", type: "Active Recovery", exercises: ["Stretching"] },
+        { day: "Sunday", type: "Rest" },
+      ]),
+    },
+    {
+      name: "Upper/Lower Split",
+      splitType: "Upper/Lower",
+      difficulty: "Intermediate",
+      goal: "Build",
+      equipmentRequired: "Full Gym",
+      scheduleJson: JSON.stringify([
+        { day: "Monday", type: "Upper", exercises: ["Chest", "Back", "Shoulders", "Arms"] },
+        { day: "Tuesday", type: "Lower", exercises: ["Legs", "Glutes"] },
+        { day: "Wednesday", type: "Rest" },
+        { day: "Thursday", type: "Upper", exercises: ["Chest", "Back", "Shoulders", "Arms"] },
+        { day: "Friday", type: "Lower", exercises: ["Legs", "Glutes"] },
+        { day: "Saturday", type: "Rest" },
+        { day: "Sunday", type: "Rest" },
+      ]),
+    }
+  ]).returning();
+
+  const pushPullPlan = workoutPlans[0];
 
   // Seed plan exercises for Push-Pull plan
   const planExercises = [
     // Day 0 (Monday) - Push
-    { planId: pushPullPlan[0].id, dayIndex: 0, exerciseId: insertedExercises[0].id, orderInDay: 1, restSeconds: 120 }, // Bench Press
-    { planId: pushPullPlan[0].id, dayIndex: 0, exerciseId: insertedExercises[1].id, orderInDay: 2, restSeconds: 90 }, // Incline Press
-    { planId: pushPullPlan[0].id, dayIndex: 0, exerciseId: insertedExercises[3].id, orderInDay: 3, restSeconds: 90 }, // Overhead Press
-    { planId: pushPullPlan[0].id, dayIndex: 0, exerciseId: insertedExercises[2].id, orderInDay: 4, restSeconds: 60 }, // Tricep Dips
+    { planId: pushPullPlan.id, dayIndex: 0, exerciseId: insertedExercises[0].id, orderInDay: 1, restSeconds: 120 }, // Bench Press
+    { planId: pushPullPlan.id, dayIndex: 0, exerciseId: insertedExercises[1].id, orderInDay: 2, restSeconds: 90 }, // Incline Press
+    { planId: pushPullPlan.id, dayIndex: 0, exerciseId: insertedExercises[3].id, orderInDay: 3, restSeconds: 90 }, // Overhead Press
+    { planId: pushPullPlan.id, dayIndex: 0, exerciseId: insertedExercises[2].id, orderInDay: 4, restSeconds: 60 }, // Tricep Dips
     
     // Day 1 (Tuesday) - Pull
-    { planId: pushPullPlan[0].id, dayIndex: 1, exerciseId: insertedExercises[4].id, orderInDay: 1, restSeconds: 120 }, // Pull-ups
-    { planId: pushPullPlan[0].id, dayIndex: 1, exerciseId: insertedExercises[5].id, orderInDay: 2, restSeconds: 90 }, // Barbell Rows
-    { planId: pushPullPlan[0].id, dayIndex: 1, exerciseId: insertedExercises[6].id, orderInDay: 3, restSeconds: 60 }, // Bicep Curls
+    { planId: pushPullPlan.id, dayIndex: 1, exerciseId: insertedExercises[4].id, orderInDay: 1, restSeconds: 120 }, // Pull-ups
+    { planId: pushPullPlan.id, dayIndex: 1, exerciseId: insertedExercises[5].id, orderInDay: 2, restSeconds: 90 }, // Barbell Rows
+    { planId: pushPullPlan.id, dayIndex: 1, exerciseId: insertedExercises[6].id, orderInDay: 3, restSeconds: 60 }, // Bicep Curls
     
     // Day 3 (Thursday) - Push (repeat)
-    { planId: pushPullPlan[0].id, dayIndex: 3, exerciseId: insertedExercises[0].id, orderInDay: 1, restSeconds: 120 },
-    { planId: pushPullPlan[0].id, dayIndex: 3, exerciseId: insertedExercises[1].id, orderInDay: 2, restSeconds: 90 },
-    { planId: pushPullPlan[0].id, dayIndex: 3, exerciseId: insertedExercises[3].id, orderInDay: 3, restSeconds: 90 },
-    { planId: pushPullPlan[0].id, dayIndex: 3, exerciseId: insertedExercises[2].id, orderInDay: 4, restSeconds: 60 },
+    { planId: pushPullPlan.id, dayIndex: 3, exerciseId: insertedExercises[0].id, orderInDay: 1, restSeconds: 120 },
+    { planId: pushPullPlan.id, dayIndex: 3, exerciseId: insertedExercises[1].id, orderInDay: 2, restSeconds: 90 },
+    { planId: pushPullPlan.id, dayIndex: 3, exerciseId: insertedExercises[3].id, orderInDay: 3, restSeconds: 90 },
+    { planId: pushPullPlan.id, dayIndex: 3, exerciseId: insertedExercises[2].id, orderInDay: 4, restSeconds: 60 },
     
     // Day 4 (Friday) - Pull (repeat)
-    { planId: pushPullPlan[0].id, dayIndex: 4, exerciseId: insertedExercises[4].id, orderInDay: 1, restSeconds: 120 },
-    { planId: pushPullPlan[0].id, dayIndex: 4, exerciseId: insertedExercises[5].id, orderInDay: 2, restSeconds: 90 },
-    { planId: pushPullPlan[0].id, dayIndex: 4, exerciseId: insertedExercises[6].id, orderInDay: 3, restSeconds: 60 },
+    { planId: pushPullPlan.id, dayIndex: 4, exerciseId: insertedExercises[4].id, orderInDay: 1, restSeconds: 120 },
+    { planId: pushPullPlan.id, dayIndex: 4, exerciseId: insertedExercises[5].id, orderInDay: 2, restSeconds: 90 },
+    { planId: pushPullPlan.id, dayIndex: 4, exerciseId: insertedExercises[6].id, orderInDay: 3, restSeconds: 60 },
     
     // Day 5 (Saturday) - Legs
-    { planId: pushPullPlan[0].id, dayIndex: 5, exerciseId: insertedExercises[7].id, orderInDay: 1, restSeconds: 120 }, // Squats
+    { planId: pushPullPlan.id, dayIndex: 5, exerciseId: insertedExercises[7].id, orderInDay: 1, restSeconds: 120 }, // Squats
   ];
 
   await db.insert(schema.planExercises).values(planExercises);

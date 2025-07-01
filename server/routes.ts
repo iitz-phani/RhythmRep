@@ -64,13 +64,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/plan/select", async (req, res) => {
     try {
       const { userId, planId } = req.body;
+      console.log("Plan selection request:", { userId, planId, body: req.body });
+      
       if (!userId || !planId) {
         return res.status(400).json({ message: "userId and planId are required" });
       }
+      
+      // Validate that the user exists
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      // Validate that the plan exists
+      const plan = await storage.getWorkoutPlan(planId);
+      if (!plan) {
+        return res.status(404).json({ message: "Workout plan not found" });
+      }
+      
       const userPlan = await storage.selectUserPlan(userId, planId);
+      console.log("Plan selected successfully:", userPlan);
       res.json(userPlan);
     } catch (error) {
-      res.status(500).json({ message: "Failed to select plan" });
+      console.error("Error selecting plan:", error);
+      res.status(500).json({ 
+        message: "Failed to select plan",
+        error: error instanceof Error ? error.message : "Unknown error"
+      });
     }
   });
 
