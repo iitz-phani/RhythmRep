@@ -117,7 +117,7 @@ export default function Onboarding() {
       case 0:
         return (
           <div className="text-center space-y-6">
-            <div className="w-24 h-24 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto">
+            <div className="w-24 h-24 bg-orange-500 rounded-full flex items-center justify-center mx-auto">
               <Activity className="text-white text-4xl" />
             </div>
             <div>
@@ -131,7 +131,7 @@ export default function Onboarding() {
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Scale className="text-white text-2xl" />
               </div>
               <h2 className="text-3xl font-bold mb-2">Basic Information</h2>
@@ -203,7 +203,7 @@ export default function Onboarding() {
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Target className="text-white text-2xl" />
               </div>
               <h2 className="text-3xl font-bold mb-2">What's Your Goal?</h2>
@@ -239,7 +239,7 @@ export default function Onboarding() {
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Activity className="text-white text-2xl" />
               </div>
               <h2 className="text-3xl font-bold mb-2">Fitness Level</h2>
@@ -274,7 +274,7 @@ export default function Onboarding() {
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Dumbbell className="text-white text-2xl" />
               </div>
               <h2 className="text-3xl font-bold mb-2">Equipment Access</h2>
@@ -309,7 +309,7 @@ export default function Onboarding() {
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white text-2xl">🎵</span>
               </div>
               <h2 className="text-3xl font-bold mb-2">Music Preferences</h2>
@@ -339,7 +339,7 @@ export default function Onboarding() {
       case 6:
         return (
           <div className="text-center space-y-6">
-            <div className="w-24 h-24 bg-gradient-to-r from-success to-secondary rounded-full flex items-center justify-center mx-auto">
+            <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto">
               <span className="text-white text-4xl">✓</span>
             </div>
             <div>
@@ -355,7 +355,7 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dark via-dark-card to-dark p-4 pt-20">
+    <div className="min-h-screen bg-gray-900 p-4 pt-20">
       <div className="max-w-2xl mx-auto">
         {/* Progress Indicator */}
         <div className="mb-8">

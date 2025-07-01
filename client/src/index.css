@@ -77,8 +77,8 @@
 }
 
 @layer components {
-  .fitness-gradient {
-    background: linear-gradient(to right, hsl(16, 100%, 60%), hsl(171, 55%, 65%));
+  .fitness-solid {
+    background-color: hsl(16, 100%, 60%);
   }
   
   .fitness-card {
@@ -89,7 +89,7 @@
   }
   
   .fitness-button {
-    background: linear-gradient(to right, hsl(16, 100%, 60%), hsl(171, 55%, 65%));
+    background-color: hsl(16, 100%, 60%);
     color: white;
     font-weight: 600;
     padding: 0.75rem 1.5rem;
@@ -100,6 +100,7 @@
   }
   
   .fitness-button:hover {
+    background-color: hsl(16, 100%, 55%);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     transform: scale(1.05);
   }

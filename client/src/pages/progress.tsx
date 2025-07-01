@@ -95,7 +95,7 @@ export default function Progress() {
 
         {/* Key Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
+          <Card className="bg-orange-500/10 border border-orange-500/20">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
@@ -110,7 +110,7 @@ export default function Progress() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-secondary/10 to-secondary/5 border border-secondary/20">
+          <Card className="bg-teal-500/10 border border-teal-500/20">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 bg-secondary/20 rounded-xl flex items-center justify-center">
@@ -125,7 +125,7 @@ export default function Progress() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20">
+          <Card className="bg-blue-500/10 border border-blue-500/20">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center">
@@ -140,7 +140,7 @@ export default function Progress() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-success/10 to-success/5 border border-success/20">
+          <Card className="bg-green-500/10 border border-green-500/20">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 bg-success/20 rounded-xl flex items-center justify-center">
@@ -210,7 +210,7 @@ export default function Progress() {
                 <div className="space-y-4">
                   {stats.totalWorkouts > 0 && (
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-gradient-to-r from-success to-secondary rounded-full flex items-center justify-center">
+                      <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
                         <Trophy className="text-white w-5 h-5" />
                       </div>
                       <div>
@@ -222,7 +222,7 @@ export default function Progress() {
                   
                   {stats.currentStreak >= 3 && (
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center">
+                      <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center">
                         <Flame className="text-white w-5 h-5" />
                       </div>
                       <div>
@@ -234,7 +234,7 @@ export default function Progress() {
 
                   {stats.totalSets >= 10 && (
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center">
+                      <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
                         <Target className="text-white w-5 h-5" />
                       </div>
                       <div>

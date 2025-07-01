@@ -194,7 +194,7 @@ export function WorkoutPlayer({ exercises, onComplete }: WorkoutPlayerProps) {
 
             {/* Rest Timer */}
             {isRestActive && (
-              <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 rounded-xl p-4 text-center">
+              <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-4 text-center">
                 <div className="text-4xl font-mono font-bold text-primary mb-2">
                   {formattedTime}
                 </div>

@@ -37,7 +37,7 @@ export function MusicPlayer({ playlist }: MusicPlayerProps) {
     <div className="fitness-card">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+          <div className="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center">
             <Volume2 className="text-white h-5 w-5" />
           </div>
           <div>
@@ -67,7 +67,7 @@ export function MusicPlayer({ playlist }: MusicPlayerProps) {
       <div className="mt-3">
         <div className="w-full bg-gray-700 rounded-full h-1">
           <div
-            className="bg-gradient-to-r from-primary to-secondary h-1 rounded-full transition-all duration-300"
+            className="bg-orange-500 h-1 rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>

@@ -92,7 +92,7 @@ export default function Plans() {
               >
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center">
+                    <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
                       <IconComponent className="text-white text-xl" />
                     </div>
                     <Badge 

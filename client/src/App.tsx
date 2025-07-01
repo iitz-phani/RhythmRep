@@ -25,7 +25,7 @@ function Dashboard() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div className="fitness-card text-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-white text-2xl">🏃</span>
             </div>
             <h3 className="font-semibold text-xl mb-2">Start Workout</h3>
@@ -36,7 +36,7 @@ function Dashboard() {
           </div>
           
           <div className="fitness-card text-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-secondary to-accent rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-white text-2xl">📊</span>
             </div>
             <h3 className="font-semibold text-xl mb-2">View Progress</h3>
@@ -47,7 +47,7 @@ function Dashboard() {
           </div>
           
           <div className="fitness-card text-center">
-            <div className="w-16 h-16 bg-gradient-to-r from-accent to-primary rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-white text-2xl">⚙️</span>
             </div>
             <h3 className="font-semibold text-xl mb-2">Settings</h3>
