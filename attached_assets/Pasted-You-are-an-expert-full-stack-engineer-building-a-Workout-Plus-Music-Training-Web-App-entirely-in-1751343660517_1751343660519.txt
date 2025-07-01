@@ -1,0 +1,104 @@
+You are an expert full-stack engineer building a **Workout-Plus-Music Training Web App** entirely inside **Replit**.
+
+────────────────────────────────────────
+🟢 1. PROJECT OVERVIEW
+────────────────────────────────────────
+• Single app that lets users pick a workout plan and automatically streams a matching music playlist while guiding the exercise.  
+• Must run end-to-end inside Replit’s free tier; optimize for quick boot-up and low CPU.  
+• Tech stack: **Front-end → React (Vite) + Tailwind; Back-end → FastAPI (Python) with SQLAlchemy; DB → SQLite for MVP (easy to swap to Postgres later).**  
+• Use environment variables for any API keys. Supply a `.env.example`.
+
+────────────────────────────────────────
+🟢 2. CORE USER FLOW
+────────────────────────────────────────
+1. **On-boarding wizard (5-7 steps)**  
+   - Collect: height, weight, age, sex, fitness level (Beginner/Inter/Adv), goal (Lose / Build / Maintain), equipment access (Home / Dumbbells / Full Gym), music preference (genre or playlist URL), wearable device (vendor or “none”).  
+   - Calculate BMI and suggested calories server-side; store in Users table.
+
+2. **Plan selection screen**  
+   - Offer: Cardio, Push-Pull split, Isolated split (Mon-Chest…), Combination split (Mon-Chest+Tri…), plus “Custom”.  
+   - Show plan preview → accept → land on Today’s Workout.
+
+3. **Workout player page**  
+   - Display exercise GIF, sets/reps, rest timer.  
+   - Embedded music player (YouTube iframe or Spotify SDK).  
+   - Log sets, reps, weight, RPE (1-10).  
+   - Rest-timer alerts (browser notifications & sound).  
+   - Adaptive difficulty: if RPE ≤ 7 for two sessions → +10 % reps next time; if RPE ≥ 9 → -10 % or deload.
+
+4. **Progress dashboard**  
+   - Charts: workout streak, total volume, body-weight trend.  
+   - Allow manual HR entry; stub Web Bluetooth hook for future HR sync.
+
+────────────────────────────────────────
+🟢 3. DATA MODEL (SQLAlchemy)
+────────────────────────────────────────
+User(id, email, pwd_hash, height_cm, weight_kg, age, sex, fitness_level,
+     goal, equipment, music_pref_json, wearable_provider, wearable_token)
+
+WorkoutPlan(id, name, split_type, difficulty, goal, equipment_required,
+            schedule_json)   -- array of Day objects
+
+Exercise(id, name, primary_muscle, gif_url, default_sets, default_reps,
+         base_difficulty)
+
+PlanExercise(id, plan_id, day_index, exercise_id,
+             sets_override, reps_override, rest_seconds, order_in_day)
+
+MusicPlaylist(id, name, genre, bpm_range, url, split_type, goal)
+
+UserProgress(id, user_id, plan_id, date, exercise_id,
+             sets_done, reps_done, weight_used, rpe, hr_avg)
+
+────────────────────────────────────────
+🟢 4. ROUTES / ENDPOINTS
+────────────────────────────────────────
+GET /api/profile               – fetch profile  
+POST /api/profile              – update profile  
+GET /api/plans                 – list plans  
+POST /api/plan/select          – attach plan to user  
+GET /api/workout/today         – today’s exercises & playlist  
+POST /api/workout/log          – save exercise set log  
+GET /api/progress/summary      – charts data  
+(WebSocket) /ws/heart-rate     – live HR (stub)  
+
+────────────────────────────────────────
+🟢 5. FRONT-END PAGES (React)
+────────────────────────────────────────
+• /onboarding (multi-step form)  
+• /plans (grid)  
+• /workout (player)  
+• /progress (graphs)  
+• /settings  
+
+Use Context or Zustand for global state; React-Query for API calls. Add a custom hook `useRestTimer`.
+
+────────────────────────────────────────
+🟢 6. SEED DATA
+────────────────────────────────────────
+• Insert at least 1 full Push-Pull 4-day template with GIF links from open-source DB.  
+• Add 3 public YouTube playlists tagged by tempo (HIIT 170-190 BPM, Hypertrophy 120-140 BPM, Cardio Chill 100-120 BPM).
+
+────────────────────────────────────────
+🟢 7. BUILD ORDER (Sprints)
+────────────────────────────────────────
+Sprint 0: repo init, Dockerfile / `.replit`, auth skeleton, DB schema.  
+Sprint 1: onboarding flow, plan selection, static playlist + GIF display.  
+Sprint 2: workout logging, rest timer, progress dashboard (basic).  
+Sprint 3: adaptive difficulty rules, user-supplied playlist URLs, HR manual entry.  
+Sprint 4 (stretch): Web Bluetooth HR sync, shareable progress card.
+
+────────────────────────────────────────
+🟢 8. DELIVERABLE
+────────────────────────────────────────
+Generate a running Replit project with:
+• `main.py` (FastAPI)  
+• `frontend/` (Vite + Tailwind)  
+• `models.py`, `database.py`, `crud.py`  
+• Seed script `seed_data.py`  
+• `.replit` and `replit.nix` configured for Gunicorn + Uvicorn + React dev server.  
+• Clear README explaining setup, env vars, and how to run `dev` and `prod`.
+
+Focus on code clarity over completeness; leave TODOs where a quick stub suffices (e.g., full HR sync). Include comments that explain any non-obvious logic.
+
+Return ONLY the code or file list plus instructions—no extra prose.
