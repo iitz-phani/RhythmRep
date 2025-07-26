@@ -1,0 +1,38 @@
+# Cursor Rules for RhythmRep - Workout + Music Training Web App
+
+## Project Overview
+This is a full-stack fitness web application that combines workout planning with music streaming. Built with React, Express.js, TypeScript, and SQLite.
+
+## Development Setup
+- Frontend: React 18 + TypeScript + Vite + Tailwind CSS
+- Backend: Express.js + TypeScript + Drizzle ORM + SQLite
+- State Management: Zustand (client) + TanStack Query (server)
+- UI Components: shadcn/ui + Radix UI
+
+## Key Directories
+- `/client/src` - React frontend application
+- `/server` - Express.js backend API
+- `/shared` - Shared TypeScript types and schemas
+- `/attached_assets` - Static assets and images
+
+## Development Commands
+- `npm run dev` - Start both client and server in development mode
+- `npm run dev:client` - Start only the Vite dev server
+- `npm run dev:server` - Start only the Express server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+
+## Database
+- Uses SQLite with Drizzle ORM
+- Database file: `fitness.db`
+- Run `npm run db:push` to sync schema changes
+
+## Ports
+- Client (Vite): 5173 (default)
+- Server (Express): 5000
+
+## Code Style
+- Use TypeScript for all new code
+- Follow existing component patterns in `/client/src/components`
+- Use Tailwind CSS for styling
+- Implement proper error handling and loading states 

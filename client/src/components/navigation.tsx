@@ -44,9 +44,9 @@ export function Navigation() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                <Play className="text-white text-sm" />
+                <span className="text-white font-bold text-lg">R</span>
               </div>
-              <span className="font-bold text-xl">FitFlow</span>
+              <span className="font-bold text-xl">RhythmRep</span>
             </div>
 
             {/* Desktop Navigation Links */}
