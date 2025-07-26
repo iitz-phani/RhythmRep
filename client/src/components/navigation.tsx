@@ -1,12 +1,15 @@
 import { Link, useLocation } from "wouter";
-import { Home, Play, TrendingUp, Settings, Menu } from "lucide-react";
+import { Home, Play, TrendingUp, Settings, Menu, LogOut } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { AuthModals } from "./auth-modals";
+import { useAppStore } from "@/lib/store";
 
 export function Navigation() {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const { user, setUser } = useAppStore();
 
   const navItems = [
     { path: "/", label: "Dashboard", icon: Home },
@@ -43,15 +46,37 @@ export function Navigation() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">R</span>
-              </div>
-              <span className="font-bold text-xl">RhythmRep</span>
+              <Link href="/">
+                <img 
+                  src="/rhythmrep-logo.png" 
+                  alt="RhythmRep Logo" 
+                  className="w-12 h-12 object-contain rounded-lg cursor-pointer hover:scale-105 transition-transform duration-200"
+                />
+              </Link>
             </div>
 
             {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center space-x-8">
               <NavLinks />
+            </div>
+
+            {/* Auth Section */}
+            <div className="hidden md:flex items-center space-x-4">
+              {user ? (
+                <div className="flex items-center space-x-3">
+                  <span className="text-sm text-gray-300">{user.email}</span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setUser(null)}
+                    className="text-gray-400 hover:text-red-400"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </Button>
+                </div>
+              ) : (
+                <AuthModals />
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -64,6 +89,27 @@ export function Navigation() {
               <SheetContent side="right" className="bg-gray-800 border-gray-700">
                 <div className="flex flex-col space-y-4 mt-8">
                   <NavLinks mobile />
+                  
+                  {/* Mobile Auth Section */}
+                  <div className="pt-4 border-t border-gray-700">
+                    {user ? (
+                      <div className="space-y-3">
+                        <div className="text-sm text-gray-300 px-3">{user.email}</div>
+                        <Button
+                          variant="ghost"
+                          className="w-full justify-start text-gray-400 hover:text-red-400"
+                          onClick={() => setUser(null)}
+                        >
+                          <LogOut className="w-4 h-4 mr-2" />
+                          Sign Out
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="px-3">
+                        <AuthModals />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </SheetContent>
             </Sheet>

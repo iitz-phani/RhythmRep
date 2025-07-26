@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertUserSchema, insertUserProgressSchema } from "@shared/schema";
 import { z } from "zod";
+import bcrypt from "bcrypt";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -19,6 +20,104 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(userWithoutPassword);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch profile" });
+    }
+  });
+
+  // Authentication routes
+  app.post("/api/auth/signup", async (req, res) => {
+    try {
+      const { email, passwordHash } = req.body;
+      
+      if (!email || !passwordHash) {
+        return res.status(400).json({ message: "Email and password are required" });
+      }
+
+      // Check if user already exists
+      const existingUser = await storage.getUserByEmail(email);
+      if (existingUser) {
+        return res.status(409).json({ message: "User with this email already exists" });
+      }
+
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(passwordHash, 10);
+
+      // Create user with minimal data
+      const userData = {
+        email,
+        passwordHash: hashedPassword,
+      };
+
+      const user = await storage.createUser(userData);
+      const { passwordHash: _, ...userWithoutPassword } = user;
+      res.json(userWithoutPassword);
+    } catch (error) {
+      console.error("Signup error:", error);
+      res.status(500).json({ message: "Failed to create account" });
+    }
+  });
+
+  app.post("/api/auth/signin", async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      
+      if (!email || !password) {
+        return res.status(400).json({ message: "Email and password are required" });
+      }
+
+      // Find user by email
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.status(401).json({ message: "Invalid email or password" });
+      }
+
+      // Verify password
+      const isValidPassword = await bcrypt.compare(password, user.passwordHash);
+      if (!isValidPassword) {
+        return res.status(401).json({ message: "Invalid email or password" });
+      }
+
+      const { passwordHash, ...userWithoutPassword } = user;
+      res.json(userWithoutPassword);
+    } catch (error) {
+      console.error("Signin error:", error);
+      res.status(500).json({ message: "Failed to sign in" });
+    }
+  });
+
+  // Google OAuth route (simplified for demo)
+  app.post("/api/auth/google", async (req, res) => {
+    try {
+      // In a real implementation, you would:
+      // 1. Verify the Google ID token
+      // 2. Extract user information from the token
+      // 3. Create or find the user in your database
+      
+      // For demo purposes, we'll create a mock user
+      const mockGoogleUser = {
+        id: Math.floor(Math.random() * 10000) + 1,
+        email: `user${Math.floor(Math.random() * 1000)}@gmail.com`,
+        name: "Google User",
+        provider: "google",
+        // Add other fields as needed
+      };
+
+      // Check if user exists, if not create them
+      let user = await storage.getUserByEmail(mockGoogleUser.email);
+      if (!user) {
+        // Create new user with Google info
+        const userData = {
+          email: mockGoogleUser.email,
+          passwordHash: "google_oauth_user", // Special marker for OAuth users
+          // Add other default fields
+        };
+        user = await storage.createUser(userData);
+      }
+
+      const { passwordHash, ...userWithoutPassword } = user;
+      res.json(userWithoutPassword);
+    } catch (error) {
+      console.error("Google OAuth error:", error);
+      res.status(500).json({ message: "Failed to authenticate with Google" });
     }
   });
 
@@ -91,6 +190,106 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: "Failed to select plan",
         error: error instanceof Error ? error.message : "Unknown error"
       });
+    }
+  });
+
+  app.post("/api/plans/custom", async (req, res) => {
+    try {
+      const { 
+        userId, 
+        name, 
+        splitType, 
+        difficulty, 
+        goal, 
+        equipmentRequired, 
+        weeklyFrequency, 
+        sessionDuration, 
+        specialFocus,
+        isCustom = true 
+      } = req.body;
+
+      if (!userId || !name || !splitType || !difficulty || !goal || !equipmentRequired) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      // Create a custom schedule based on split type
+      let scheduleJson;
+      switch (splitType) {
+        case "Upper/Lower":
+          scheduleJson = JSON.stringify([
+            { day: "Monday", type: "Upper", exercises: ["Chest", "Back", "Shoulders", "Arms"] },
+            { day: "Tuesday", type: "Lower", exercises: ["Legs", "Glutes"] },
+            { day: "Wednesday", type: "Rest" },
+            { day: "Thursday", type: "Upper", exercises: ["Chest", "Back", "Shoulders", "Arms"] },
+            { day: "Friday", type: "Lower", exercises: ["Legs", "Glutes"] },
+            { day: "Saturday", type: "Rest" },
+            { day: "Sunday", type: "Rest" },
+          ]);
+          break;
+        case "Push-Pull":
+          scheduleJson = JSON.stringify([
+            { day: "Monday", type: "Push", exercises: ["Chest", "Shoulders", "Triceps"] },
+            { day: "Tuesday", type: "Pull", exercises: ["Back", "Biceps"] },
+            { day: "Wednesday", type: "Rest" },
+            { day: "Thursday", type: "Push", exercises: ["Chest", "Shoulders", "Triceps"] },
+            { day: "Friday", type: "Pull", exercises: ["Back", "Biceps"] },
+            { day: "Saturday", type: "Legs", exercises: ["Legs"] },
+            { day: "Sunday", type: "Rest" },
+          ]);
+          break;
+        case "Full Body":
+          scheduleJson = JSON.stringify([
+            { day: "Monday", type: "Full Body", exercises: ["Chest", "Back", "Legs"] },
+            { day: "Tuesday", type: "Rest" },
+            { day: "Wednesday", type: "Full Body", exercises: ["Shoulders", "Arms", "Core"] },
+            { day: "Thursday", type: "Rest" },
+            { day: "Friday", type: "Full Body", exercises: ["Chest", "Back", "Legs"] },
+            { day: "Saturday", type: "Rest" },
+            { day: "Sunday", type: "Rest" },
+          ]);
+          break;
+        case "Cardio":
+          scheduleJson = JSON.stringify([
+            { day: "Monday", type: "HIIT", exercises: ["Cardio", "Core"] },
+            { day: "Tuesday", type: "HIIT", exercises: ["Cardio", "Core"] },
+            { day: "Wednesday", type: "Rest" },
+            { day: "Thursday", type: "HIIT", exercises: ["Cardio", "Core"] },
+            { day: "Friday", type: "HIIT", exercises: ["Cardio", "Core"] },
+            { day: "Saturday", type: "Active Recovery", exercises: ["Stretching"] },
+            { day: "Sunday", type: "Rest" },
+          ]);
+          break;
+        default:
+          scheduleJson = JSON.stringify([
+            { day: "Monday", type: "Workout", exercises: ["Full Body"] },
+            { day: "Tuesday", type: "Rest" },
+            { day: "Wednesday", type: "Workout", exercises: ["Full Body"] },
+            { day: "Thursday", type: "Rest" },
+            { day: "Friday", type: "Workout", exercises: ["Full Body"] },
+            { day: "Saturday", type: "Rest" },
+            { day: "Sunday", type: "Rest" },
+          ]);
+      }
+
+      const customPlan = {
+        name,
+        splitType,
+        difficulty,
+        goal,
+        equipmentRequired,
+        scheduleJson,
+        isCustom: true,
+        userId: userId,
+        description: specialFocus || `Custom ${splitType} plan for ${goal}`,
+        weeklyFrequency,
+        sessionDuration
+      };
+
+      const newPlan = await storage.createCustomPlan(customPlan);
+      res.json(newPlan);
+    } catch (error) {
+      console.error("Custom plan creation error:", error);
+      res.status(500).json({ message: "Failed to create custom plan" });
     }
   });
 

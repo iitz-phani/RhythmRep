@@ -28,6 +28,11 @@ export const workoutPlans = sqliteTable("workout_plans", {
   goal: text("goal").notNull(),
   equipmentRequired: text("equipment_required").notNull(),
   scheduleJson: text("schedule_json").notNull(), // JSON array of day objects
+  isCustom: integer("is_custom").default(0), // 0 = false, 1 = true
+  userId: integer("user_id").references(() => users.id), // For custom plans
+  description: text("description"), // For custom plans
+  weeklyFrequency: text("weekly_frequency"), // For custom plans
+  sessionDuration: text("session_duration"), // For custom plans
 });
 
 export const exercises = sqliteTable("exercises", {

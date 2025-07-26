@@ -23,6 +23,7 @@ export interface IStorage {
   // Workout plan methods
   getWorkoutPlans(): Promise<WorkoutPlan[]>;
   getWorkoutPlan(id: number): Promise<WorkoutPlan | undefined>;
+  createCustomPlan(planData: any): Promise<WorkoutPlan>;
   selectUserPlan(userId: number, planId: number): Promise<UserPlan>;
   getUserActivePlan(userId: number): Promise<UserPlan | undefined>;
 
@@ -87,6 +88,23 @@ export class SqliteStorage implements IStorage {
 
   async getWorkoutPlan(id: number): Promise<WorkoutPlan | undefined> {
     const result = await db.select().from(schema.workoutPlans).where(eq(schema.workoutPlans.id, id));
+    return result[0];
+  }
+
+  async createCustomPlan(planData: any): Promise<WorkoutPlan> {
+    const result = await db.insert(schema.workoutPlans).values({
+      name: planData.name,
+      splitType: planData.splitType,
+      difficulty: planData.difficulty,
+      goal: planData.goal,
+      equipmentRequired: planData.equipmentRequired,
+      scheduleJson: planData.scheduleJson,
+      isCustom: planData.isCustom || true,
+      userId: planData.userId,
+      description: planData.description,
+      weeklyFrequency: planData.weeklyFrequency,
+      sessionDuration: planData.sessionDuration
+    }).returning();
     return result[0];
   }
 
